@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 public class CalculatorActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -54,62 +55,46 @@ public class CalculatorActivity extends AppCompatActivity implements View.OnClic
             // all buttons except square root
             inputText = ((TextView)v).getText().toString();
         }
-        switch(v.getId()) {
-            // clear
-            case R.id.btn_clear:
-                clear();
-                break;
+        int id = v.getId();// clear
+        if (id == R.id.btn_clear) {
+            clear();
             // cancel
-            case R.id.btn_cancel:
-                break;
-
-            // operators
-            case R.id.btn_plus:
-            case R.id.btn_minus:
-            case R.id.btn_multiply:
-            case R.id.btn_divide:
-                operator = inputText;
-                refreshText(showText + operator);
-                break;
+        } else if (id == R.id.btn_cancel) {// operators
+        } else if (id == R.id.btn_plus || id == R.id.btn_minus || id == R.id.btn_multiply || id == R.id.btn_divide) {
+            operator = inputText;
+            refreshText(showText + operator);
 
             // equal
-            case R.id.btn_equal:
-                double calculate_result = calculatorFour();
-                refreshOperator(String.valueOf(calculate_result));
-                refreshText(showText + "=" + result);
-                break;
+        } else if (id == R.id.btn_equal) {
+            double calculate_result = calculatorFour();
+            refreshOperator(String.valueOf(calculate_result));
+            refreshText(showText + "=" + result);
             // square root
-            case R.id.ib_sqrt:
-                double sqrt_result = Math.sqrt(Double.parseDouble(firstNum));
-                refreshOperator(String.valueOf(sqrt_result));
-                refreshText(showText + "√=" + result);
-                break;
+        } else if (id == R.id.ib_sqrt) {
+            double sqrt_result = Math.sqrt(Double.parseDouble(firstNum));
+            refreshOperator(String.valueOf(sqrt_result));
+            refreshText(showText + "√=" + result);
             // reciprocal
-            case R.id.btn_reciprocal:
-                double reciprocal_result = 1.0 / Double.parseDouble(firstNum);
-                refreshOperator(String.valueOf(reciprocal_result));
-                refreshText(showText + "/=" + result);
-                break;
+        } else if (id == R.id.btn_reciprocal) {
+            double reciprocal_result = 1.0 / Double.parseDouble(firstNum);
+            refreshOperator(String.valueOf(reciprocal_result));
+            refreshText(showText + "/=" + result);
 
             // numbers and dot
-            default:
-                // no operator, start new
-                if(result.length() > 0 && operator.equals("")) {
-                    clear();
-                }
-                if(operator.equals("")) {
-                    firstNum = firstNum + inputText;
-                }
-                else {
-                    secondNum = secondNum + inputText;
-                }
-                if(showText.equals("0") && !inputText.equals(".")) {
-                    refreshText(inputText);
-                }
-                else {
-                    refreshText(showText + inputText);
-                }
-                break;
+        } else {// no operator, start new
+            if (result.length() > 0 && operator.equals("")) {
+                clear();
+            }
+            if (operator.equals("")) {
+                firstNum = firstNum + inputText;
+            } else {
+                secondNum = secondNum + inputText;
+            }
+            if (showText.equals("0") && !inputText.equals(".")) {
+                refreshText(inputText);
+            } else {
+                refreshText(showText + inputText);
+            }
         }
     }
 
