@@ -24,6 +24,7 @@ public class CalculatorActivity extends AppCompatActivity implements View.OnClic
         // buttons
         findViewById(R.id.btn_cancel).setOnClickListener(this);
         findViewById(R.id.btn_clear).setOnClickListener(this);
+        findViewById(R.id.btn_equal).setOnClickListener(this);
         findViewById(R.id.btn_plus).setOnClickListener(this);
         findViewById(R.id.btn_minus).setOnClickListener(this);
         findViewById(R.id.btn_multiply).setOnClickListener(this);
@@ -55,46 +56,56 @@ public class CalculatorActivity extends AppCompatActivity implements View.OnClic
             // all buttons except square root
             inputText = ((TextView)v).getText().toString();
         }
-        int id = v.getId();// clear
-        if (id == R.id.btn_clear) {
+        if (v.getId() == R.id.btn_clear) {// clear
             clear();
-            // cancel
-        } else if (id == R.id.btn_cancel) {// operators
-        } else if (id == R.id.btn_plus || id == R.id.btn_minus || id == R.id.btn_multiply || id == R.id.btn_divide) {
+            return;
+        }
+        if (v.getId() == R.id.btn_cancel) {// cancel
+            refreshText(showText.substring(0, showText.length() - 1));
+            return;
+        }
+        if (v.getId() == R.id.btn_plus || v.getId() == R.id.btn_minus||
+                v.getId() == R.id.btn_multiply||v.getId() ==R.id.btn_divide) {// operators
             operator = inputText;
             refreshText(showText + operator);
+            return;
+        }
+        if (v.getId() ==R.id.btn_equal) {// equal
 
-            // equal
-        } else if (id == R.id.btn_equal) {
             double calculate_result = calculatorFour();
             refreshOperator(String.valueOf(calculate_result));
             refreshText(showText + "=" + result);
-            // square root
-        } else if (id == R.id.ib_sqrt) {
+            return;
+        }
+        if (v.getId() ==R.id.ib_sqrt) {// square root
+
             double sqrt_result = Math.sqrt(Double.parseDouble(firstNum));
             refreshOperator(String.valueOf(sqrt_result));
             refreshText(showText + "√=" + result);
-            // reciprocal
-        } else if (id == R.id.btn_reciprocal) {
+            return;
+        }
+        if (v.getId() ==R.id.btn_reciprocal) {// reciprocal
             double reciprocal_result = 1.0 / Double.parseDouble(firstNum);
             refreshOperator(String.valueOf(reciprocal_result));
             refreshText(showText + "/=" + result);
-
-            // numbers and dot
-        } else {// no operator, start new
-            if (result.length() > 0 && operator.equals("")) {
-                clear();
-            }
-            if (operator.equals("")) {
-                firstNum = firstNum + inputText;
-            } else {
-                secondNum = secondNum + inputText;
-            }
-            if (showText.equals("0") && !inputText.equals(".")) {
-                refreshText(inputText);
-            } else {
-                refreshText(showText + inputText);
-            }
+            return;
+        }
+        // numbers and dot
+        // no operator, start new
+        if(result.length() > 0 && operator.equals("")) {
+            clear();
+        }
+        if(operator.equals("")) {
+            firstNum = firstNum + inputText;
+        }
+        else {
+            secondNum = secondNum + inputText;
+        }
+        if(showText.equals("0") && !inputText.equals(".")) {
+            refreshText(inputText);
+        }
+        else {
+            refreshText(showText + inputText);
         }
     }
 
